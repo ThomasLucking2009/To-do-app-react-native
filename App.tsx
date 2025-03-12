@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 // import CheckBox from '@react-native-community/checkbox';
 import { Modal, TextInput, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 
 type Task = {
   id: number;
   text: string;
+  checked: boolean;
 };
 
 function App(): React.JSX.Element {
   const [boxes, setBoxes] = useState<Task[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [newTaskText, setNewTaskText] = useState('');
-  const [isSelected, setSelection] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: '#242323',
@@ -23,7 +25,8 @@ function App(): React.JSX.Element {
     if (newTaskText.trim()) {
       const newTask = {
         id: Date.now(),
-        text: newTaskText.trim()
+        text: newTaskText.trim(),
+        checked: false,
       };
       setBoxes([...boxes, newTask]);
       setNewTaskText('');
@@ -31,9 +34,10 @@ function App(): React.JSX.Element {
     }
   };
 
+
   return (
     <SafeAreaView style={backgroundStyle}>
-      <ScrollView style= {styles.scroll}>
+      <ScrollView style={styles.scroll}>
         <Modal
           animationType="fade"
           transparent={true}
@@ -47,17 +51,17 @@ function App(): React.JSX.Element {
                 value={newTaskText}
                 onChangeText={setNewTaskText}
                 placeholder="Enter new task"
-                placeholderTextColor="#999"
+                placeholderTextColor="#0582e7"
                 autoFocus={true}
               />
-              <Pressable 
-                style={styles.addButton} 
+              <Pressable
+                style={styles.addButton}
                 onPress={addTask}
               >
                 <Text style={styles.addButtonText}>Add Task</Text>
               </Pressable>
-              <Pressable 
-                style={styles.cancelButton} 
+              <Pressable
+                style={styles.cancelButton}
                 onPress={() => setModalVisible(false)}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
@@ -65,29 +69,32 @@ function App(): React.JSX.Element {
             </View>
           </View>
         </Modal>
-        <Pressable 
-          style={styles.button} 
-          onPress={() => setModalVisible(true)} 
+        <Pressable
+          style={styles.button}
+          onPress={() => setModalVisible(true)}
         >
           <Text style={styles.textstyle}>Add Task</Text>
         </Pressable>
-
-        <Pressable 
-          style={styles.button2} 
-          onPress={() => setBoxes(boxes.slice(0, -1))}
-        >
-          <Text style={styles.textstyle2}>-</Text>
-        </Pressable>
-
         <View style={styles.container}>
           {boxes.map((box) => (
             <View key={box.id} style={styles.rec}>
-            <CheckBox
-              checked={isSelected}
-              onPress={() => setSelection(!isSelected)}
-              style={styles.checkbox}
-            />
+              <View style={styles.Completed}>
+                <CheckBox
+                  checked={box.checked}
+                  onPress={() => {
+                    setBoxes(boxes.map(item =>
+                      item.id === box.id ? { ...item, checked: !item.checked } : item
+                    ));
+                  }}
+                  style={styles.checkbox}
+                />
+              </View>
               <Text style={styles.boxText}>{box.text}</Text>
+              <View style={styles.delete}>
+                <Pressable onPress={() => setBoxes(boxes.filter(item => item.id !== box.id))}>
+                  <FontAwesome name="trash" size={35} color="red" />
+                </Pressable>
+              </View>
             </View>
           ))}
         </View>
@@ -110,13 +117,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   button: {
-    backgroundColor: '#9c49f5',
+    backgroundColor: '#0582e7',
     padding: 15,
     height: 56,
     width: 180,
     borderRadius: 9,
     borderWidth: 2,
-    borderColor: '#9c49f5',
+    borderColor: '#0582e7',
     marginLeft: 12,
   },
   textstyle2: {
@@ -146,6 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   boxText: {
+    top: -10,
     color: 'white',
     fontSize: 18,
   },
@@ -173,7 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   addButton: {
-    backgroundColor: '#9c49f5',
+    backgroundColor: '#0582e7',
     padding: 10,
     borderRadius: 5,
     width: '100%',
@@ -185,20 +193,35 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   cancelButton: {
+    color: '#0582e7',
     marginTop: 10,
     padding: 10,
   },
   cancelButtonText: {
-    color: '#9c49f5',
+    color: '#0582e7',
     fontSize: 16,
   },
-  scroll:{
+  scroll: {
     flex: 1
 
   },
   checkbox: {
-    alignSelf: "center",
+    alignSelf: "flex-start"
+
+  },
+  delete: {
+    alignSelf: "flex-end", // Moves to the rightmost side of the flex container
+    top: -39,
+    right: 30
+
+  },
+  Completed: {
+    alignSelf: "flex-start", // Moves to the rightmost side of the flex container
+    top: 30,
+    left: 8,
+
   }
+
 });
 
 export default App;
