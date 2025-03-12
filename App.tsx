@@ -88,8 +88,10 @@ function App(): React.JSX.Element {
                   }}
                   style={styles.checkbox}
                 />
+
               </View>
-              <Text style={styles.boxText}>{box.text}</Text>
+
+              <Text style={[styles.boxText, box.checked && styles.completedText]}>{box.text}</Text>
               <View style={styles.delete}>
                 <Pressable onPress={() => setBoxes(boxes.filter(item => item.id !== box.id))}>
                   <FontAwesome name="trash" size={35} color="red" />
@@ -220,7 +222,11 @@ const styles = StyleSheet.create({
     top: 30,
     left: 8,
 
-  }
+  },
+  completedText: {
+    textDecorationLine: "line-through",
+    color: "gray",  // Faded color when checked
+  },
 
 });
 
