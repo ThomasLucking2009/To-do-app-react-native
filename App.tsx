@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-// import CheckBox from '@react-native-community/checkbox';
 import { Modal, TextInput, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View, useColorScheme } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Icon } from 'react-native-elements';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { createStaticNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 type Task = {
