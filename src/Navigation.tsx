@@ -1,27 +1,27 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-// Screens
+// Import screens
 import HomeScreen from './App';
-import Login from './src/Login'; // if filename is Login.tsx // if filename is login.tsx
+import Login from './Login';
 
-// Define the RootStackParamList to include type definitions for navigation
 export type RootStackParamList = {
   Home: undefined;
-  Details: { itemId?: number };
-  NewScreen: undefined;
+  Login: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={Login} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default Navigation;
