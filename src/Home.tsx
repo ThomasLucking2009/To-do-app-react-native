@@ -9,7 +9,7 @@ type Task = {
     checked: boolean;
 };
 
-function Home({ navigation }): React.JSX.Element {
+function Home(): React.JSX.Element {
     const [boxes, setBoxes] = useState<Task[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newTaskText, setNewTaskText] = useState('');
@@ -75,12 +75,7 @@ function Home({ navigation }): React.JSX.Element {
                     <Text style={styles.textstyle}>Add Task</Text>
                 </Pressable>
                 {/* THIS IS THE FIXED LINE - wrapped navigation.navigate in a function */}
-                <Pressable 
-                    onPress={() => navigation.navigate('Login')} 
-                    style={({pressed}) => [styles.button, pressed ? {backgroundColor: 'black'} : {}]}
-                >
-                    <Text>Test</Text>
-                </Pressable>
+                
                 <View style={styles.container}>
                     {boxes.map((box) => (
                         <View key={box.id} style={styles.rec}>
