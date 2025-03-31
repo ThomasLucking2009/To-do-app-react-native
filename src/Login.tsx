@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const Login = ({ navigation }: any) => {
   return (
